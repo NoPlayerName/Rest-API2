@@ -17,6 +17,10 @@ return new class extends Migration
             $table->integer('user_id');
             $table->string('comments_content');
             $table->timestamps();
+            $table->softDeletes();
+
+            // $table->foreign('post_id')->references('id')->on('posts');
+            $table->foreign('user_id')->references('id')->on('users');
 
         });
     }
