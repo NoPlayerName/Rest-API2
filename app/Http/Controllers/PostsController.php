@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PostResource;
 use App\Models\Posts;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,7 @@ class PostsController extends Controller
     public function index()
     {
         $data = Posts::all();
-        return response()->json($data);
+        return new PostResource(true, 'List Data Posts', $data);
     }
 
     /**
@@ -21,7 +22,15 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = Posts::create(
+            [      
+                'tittle' => $request->tittle,
+                'news_content' => $request->news_content,
+                'author' => $request->author,
+            ]
+        );
+
+        return new PostResource(true, 'Data Berhasil ditambahakan', $data);
     }
 
     /**
