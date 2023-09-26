@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CommentsResource;
 use App\Models\Comments;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,7 @@ class CommentsController extends Controller
     public function index()
     {
         $data = Comments::all();
-        return response()->json($data);
+        return new CommentsResource(true, 'Data berhasil ditampilkan', $data);
     }
 
     /**
@@ -21,7 +22,13 @@ class CommentsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = Comments::create([
+            'post_id' => $request->post_id,
+        'user_id' => $request->user_id,
+        'comments_content' => $request->comments_content,
+        ]);
+
+        return new CommentsResource(true, 'Data berhasil ditambahakan', $data);
     }
 
     /**
@@ -43,8 +50,10 @@ class CommentsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comments $comments)
+    public function destroy($id)
     {
-        //
+        $data = Comments::where('id', $id)->delete();
+
+        return new CommentsResource(true, 'Data berhasil dihapus', $data);
     }
 }
