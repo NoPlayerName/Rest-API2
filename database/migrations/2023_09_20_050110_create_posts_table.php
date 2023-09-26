@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->integer('user_id');
             $table->string('tittle');
             $table->string('news_content');
             $table->unsignedBigInteger('author');
