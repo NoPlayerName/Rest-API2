@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\UserController;
+use App\Models\User;
 // use App\Models\Posts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,8 +20,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::get('posts/content', [PostsController::class, 'index']);
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+Route::apiResource('user', UserController::class);
+Route::apiResource('posts/content', PostsController::class);
+Route::apiResource('comments', CommentsController::class);
