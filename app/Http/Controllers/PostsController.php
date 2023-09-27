@@ -30,6 +30,7 @@ class PostsController extends Controller
             ]
         );
 
+        
         return new PostResource(true, 'Data Berhasil ditambahakan', $data);
     }
 
@@ -44,16 +45,30 @@ class PostsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Posts $posts)
+    public function update(Request $request, $id)
     {
-        //
+        $data = Posts::where('id', $id)->update([
+            'tittle' => $request->tittle,
+            'news_content' => $request->news_content,
+            'author' => $request->author,
+        ]);
+
+        if ($data) {
+            $message = 'Data Berhasil Diedit';
+        }else {
+            $message = 'Data gagal diedit';
+        }
+
+        return new PostResource(true, $message, $data);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Posts $posts)
+    public function destroy($id)
     {
-        //
+        $data = Posts::where('id', $id)->delete();
+
+        return new PostResource(true, 'Data berhasil didelete', $data);
     }
 }
