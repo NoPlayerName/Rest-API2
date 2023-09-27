@@ -42,9 +42,22 @@ class CommentsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Comments $comments)
+    public function update(Request $request, $id)
     {
-        //
+        $data = Comments::where('id', $id)
+                ->update([
+                 'post_id' => $request->post_id,
+                 'user_id' => $request->user_id,
+                 'comments_content' => $request->comments_content,   
+                ]);
+
+            if($data){
+                $message = 'Data behasil diupdate';
+            }else{
+                $message = 'Data gala diupdate';
+            }
+
+        return new CommentsResource(true, $message, $data);
     }
 
     /**
