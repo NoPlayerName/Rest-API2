@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
@@ -16,10 +19,10 @@ class RegisterController extends Controller
         $validator = Validator::make($request->all(),
         [
             'fristname'     => 'required',
-            'lastname'      => 'requiured',
+            'lastname'      => 'required',
             'email'         => 'required|email|unique:users',
             'username'      => 'required',
-            'password'      => 'required|min:8|confirmed',
+            'password'      => 'required|min:8|confirmed'
         ]);
         
         if ($validator->fails()) {
@@ -32,7 +35,19 @@ class RegisterController extends Controller
                 'lastname'      => $request->lastname,
                 'email'         => $request->email,
                 'username'      => $request->username,
-                'password'      => Hased::make($request->password),
+                'password'      => Hash::make($request->password),
             ]);
+
+            if ($user) {
+                return response()->json([
+                    'success' => true,
+                    'user'=> $user,
+                ], 201);
+            }
+
+            return response()->json(
+                [
+                    'success' => false,
+                ], 409);
     }
 }
