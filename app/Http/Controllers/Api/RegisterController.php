@@ -35,7 +35,7 @@ class RegisterController extends Controller
                 'lastname'      => $request->lastname,
                 'email'         => $request->email,
                 'username'      => $request->username,
-                'password'      => Hash::make($request->password),
+                'password'      => bcrypt($request->password),
             ]);
 
             if ($user) {
