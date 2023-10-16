@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\Api\LogoutController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\PostsController;
@@ -22,12 +23,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
+    
 // });
+Route::post('register', RegisterController::class)->name('register');
+Route::post('login', LoginController::class)->name('login');
+Route::post('logout', LogoutController::class)->name('logout');
 
-Route::post('register', RegisterController::class);
-Route::post('login', LoginController::class);
-Route::apiResource('user', UserController::class);
-Route::apiResource('posts/content', PostsController::class);
-Route::apiResource('comments', CommentsController::class);
+//untuk middleware nya di rubah dulu menjadi auth:api sesuai dengan config guards
+Route::middleware('auth:api')->group(function () {
+    Route::apiResource('user', UserController::class);
+    Route::apiResource('posts/content', PostsController::class);
+    Route::apiResource('comments', CommentsController::class);
+    
+});
+
