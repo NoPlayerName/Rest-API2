@@ -8,7 +8,6 @@ use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenExpiredException;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenInvalidException;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
-use PHPOpenSourceSaver\JWTAuth\JWT;
 
 class LogoutController extends Controller
 {
@@ -17,15 +16,13 @@ class LogoutController extends Controller
      */
     public function __invoke(Request $request)
     {
-        //remove token
-        $removeToken = JWTAuth::invalid(JWTAuth::getToken());
+       $removeToken = JWTAuth::invalidate(JWTAuth::getToken());
 
-        if ($removeToken) {
-            //return respon JSON
-            return response()->json([
-                'success' => true,
-                'message' => 'Logout Berhasil'
-            ]);
-        }
+       if ($removeToken) {
+        return response()->json([
+            'success' => true,
+            'message' => 'Logout Berhasil'
+        ]);
+       }
     }
 }
