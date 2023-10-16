@@ -22,27 +22,29 @@ class LoginController extends Controller
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
-        }
-
-        $data = [
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ];
-        
-        // $credentials = $request->only('email', 'password');
-
-        if (!$token = auth()->guard('api')->attempt($data)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Password Anda salah'
-            ], 401);
         }else{
-            return response()->json([
-                'success' => true,
-                'user' => auth()->guard('api')->user(),
-                'token' => $token
-            ], 200);
+            // $data = [
+            //     'email' => $request->email,
+            //     'password' => $request->password,
+            // ];
+            
+            $credentials = $request->only('email', 'password');
+
+            if (!$token = auth()->guard('api')->attempt($credentials)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Password Anda salah'
+                ], 401);
+            }else{
+                return response()->json([
+                    'success' => true,
+                    'user' => auth()->guard('api')->user(),
+                    'token' => $token
+                ], 200);
+            }
         }
+
+       
 
         
     }
